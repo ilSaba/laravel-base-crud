@@ -3,7 +3,7 @@
 @section('main')
     <main>
         <form action="{{ route('comics.store') }}" method="post">
-            <input type="text" name="title" placeholder="Title">
+            <input type="text" name="title" placeholder="Titlee">
             <input type="text" name="description" placeholder="Description">
             <input type="number" name="price" placeholder="Price">
             <input type="text" name="series" placeholder="Series">
