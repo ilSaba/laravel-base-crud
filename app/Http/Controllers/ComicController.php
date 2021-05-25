@@ -37,7 +37,33 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|unique:comics|string|max:255',
+            'description' => 'required|string',
+            'thumb' => 'required|string',
+            'price' => 'required|integer',
+            'series' => 'required|string',
+            'sale_date' => 'required|string',
+            'type' => 'required|string',
+        ]);
+
+        $data = $request->all();
+
+        $comic_obg = new Comic();
+        $comic_obg->title = $data['title'];
+        $comic_obg->description = $data['description'];
+        $comic_obg->thumb = $data['thumb'];
+        $comic_obg->price = $data['price'];
+        $comic_obg->series = $data['series'];
+        $comic_obg->sale_date = $data['sale_date'];
+        $comic_obg->type = $data['type'];
+        $comic_obg->save();
+
+        $comic = Comic::orderBy('id', 'desc')->first();
+
+        return redirect()->route('comics.show', compact('comic'));
+
+
     }
 
     /**
@@ -59,7 +85,7 @@ class ComicController extends Controller
      */
     public function edit(Comic $comic)
     {
-        //
+        return view('comics.edit', compact('comic'));
     }
 
     /**
@@ -71,7 +97,20 @@ class ComicController extends Controller
      */
     public function update(Request $request, Comic $comic)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'thumb' => 'required|string',
+            'price' => 'required|integer',
+            'series' => 'required|string',
+            'sale_date' => 'required|string',
+            'type' => 'required|string',
+        ]);
+
+        $data = $request->all();
+        $comic->update($data);
+
+        return redirect()->route('comics.show', compact('comic'));
     }
 
     /**
@@ -82,6 +121,8 @@ class ComicController extends Controller
      */
     public function destroy(Comic $comic)
     {
-        //
+        $comic->delete();
+
+        return redirect()->route('comics.index');
     }
 }
